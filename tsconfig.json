@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"lib": [ "es5" ],
+		"noImplicitAny": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"outDir": "out",
+		"strict": true,
+		"target": "es5",
+	},
+	"include": [
+		"./lib/**/*.ts",
+		"./src/**/*.ts",
+		"./tests/**/*.ts"
+	],
+	"noEmit": true,
+}

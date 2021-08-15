@@ -1,0 +1,60 @@
+{
+	"name": "openrct2-park-rating-inspector",
+	"author": "Basssiiie",
+	"license": "MIT",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"start": "npm run watch",
+		"watch": "nodemon --watch ./src --ext js,ts",
+		"build": "npm run lint && rollup --config rollup.config.prod.js",
+		"build:dev": "rollup --config rollup.config.dev.js",
+		"lint": "eslint ./src --ext .js --ext .ts",
+		"test": "nyc ava"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Basssiiie/OpenRCT2-ParkRatingInspector.git"
+	},
+	"homepage": "https://github.com/Basssiiie/OpenRCT2-ParkRatingInspector#readme",
+	"bugs": {
+		"url": "https://github.com/Basssiiie/OpenRCT2-ParkRatingInspector/issues"
+	},
+	"dependencies": {
+		"openrct2-fluentui": "^0.1.0"
+	},
+	"devDependencies": {
+		"@ava/typescript": "^2.0.0",
+		"@rollup/plugin-commonjs": "^20.0.0",
+		"@rollup/plugin-node-resolve": "^13.0.4",
+		"@rollup/plugin-replace": "^3.0.0",
+		"@rollup/plugin-typescript": "^8.2.5",
+		"@typescript-eslint/eslint-plugin": "^4.29.1",
+		"@typescript-eslint/parser": "^4.29.1",
+		"ava": "^3.15.0",
+		"eslint": "^7.32.0",
+		"eslint-plugin-import": "^2.24.0",
+		"nodemon": "^2.0.12",
+		"nyc": "^15.1.0",
+		"openrct2-mocks": "^0.1.0",
+		"rollup": "^2.56.2",
+		"rollup-plugin-terser": "^7.0.2",
+		"ts-node": "^10.2.0",
+		"tslib": "^2.3.1",
+		"typescript": "^4.3.5"
+	},
+	"ava": {
+		"extensions": [
+			"ts"
+		],
+		"files": [
+			"tests/**/*.tests.ts"
+		],
+		"require": [
+			"./tests/_setup.js",
+			"ts-node/register"
+		],
+		"verbose": true
+	}
+}
