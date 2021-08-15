@@ -2,7 +2,7 @@
 
 This plugin helps you break down your park rating and figure out why it is so low or so high. The inspector will show each of the different possible influences and how much they are currently affecting your rating, which should help you figure out where you can improve.
 
-![(Image of the Park Rating Inspector)](https://raw.githubusercontent.com/Basssiiie/OpenRCT2-RideVehicleEditor/master/img/magicmountain.png)
+![(Image of the Park Rating Inspector)](https://raw.githubusercontent.com/Basssiiie/OpenRCT2-ParkRatingInspector/master/img/magicmountain.png)
 
 Thanks to Deurklink for the idea and guide.
 
