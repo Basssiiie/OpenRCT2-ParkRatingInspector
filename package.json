@@ -35,7 +35,7 @@
 		"ava": "^3.15.0",
 		"eslint": "^7.32.0",
 		"eslint-plugin-import": "^2.24.0",
-		"nodemon": "^2.0.12",
+		"nodemon": "^2.0.13",
 		"nyc": "^15.1.0",
 		"openrct2-mocks": "^0.1.0",
 		"rollup": "^2.56.2",
