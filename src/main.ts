@@ -115,7 +115,7 @@ function window(): WindowTemplate
 /**
  * Entry point of the plugin.
  */
-function main(): void
+export function main(): void
 {
 	Log.debug("Plugin started.");
 
@@ -129,7 +129,7 @@ function main(): void
 		if (!context.apiVersion || context.apiVersion < 36)
 		{
 			const title = "Please update the game!";
-			const message = "The version of OpenRCT2 you are currently playing is too old for this plugin.";
+			const message = "\nThe version of OpenRCT2 you are currently playing is too old for this plugin.";
 
 			ui.showError(title, message);
 			console.log(`[ParkRatingInspector] ${title} ${message}`);
@@ -140,6 +140,3 @@ function main(): void
 		window().open();
 	});
 };
-
-
-export default main;

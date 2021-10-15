@@ -56,7 +56,6 @@ export const ParkRating =
 			},
 			recalculate: () => recalculateEffects(effects, result)
 		};
-		recalculateEffects(effects, result);
 		return result;
 	}
 };
