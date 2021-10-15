@@ -28,6 +28,7 @@ test("All effects are valid and active", t =>
 	ParkInfo.casualtyPenalty = 25;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	t.is(11, rating.effects.length);
 	t.true(rating.effects.every(e => e.active));
@@ -43,6 +44,7 @@ test("Difficult rating is enabled", t =>
 	ParkInfo.hasDifficultParkRating = true;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(difficultyEffect));
 	t.is("enabled", effect?.value);
@@ -56,6 +58,7 @@ test("Difficult rating is disabled", t =>
 	ParkInfo.hasDifficultParkRating = false;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(difficultyEffect));
 	t.is(undefined, effect); // gone
@@ -68,6 +71,7 @@ test("Difficult rating is enabled then disabled then enabled", t =>
 	ParkInfo.hasDifficultParkRating = true;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect1 = rating.effects.find(e => e.name.includes(difficultyEffect));
 	t.true(effect1?.active);
@@ -92,6 +96,7 @@ test("Total guests", t =>
 	ParkInfo.guests.total = 1310;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(numberOfGuestsEffect));
 	t.true(effect?.value.includes("1310"), effect?.value);
@@ -105,6 +110,7 @@ test("Total guests: cap at 2000", t =>
 	ParkInfo.guests.total = 2600;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(numberOfGuestsEffect));
 	t.true(effect?.value.includes("2600"), effect?.value);
@@ -119,6 +125,7 @@ test("Happy guests: 100% happiness", t =>
 	ParkInfo.guests.happy = 500;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(happyGuestsEffect));
 	t.true(effect?.value.includes("500/500"), effect?.value);
@@ -133,6 +140,7 @@ test("Happy guests: 50% happiness", t =>
 	ParkInfo.guests.happy = 250;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(happyGuestsEffect));
 	t.true(effect?.value.includes("250/500"), effect?.value);
@@ -147,6 +155,7 @@ test("Happy guests: 0% happiness", t =>
 	ParkInfo.guests.happy = 0;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(happyGuestsEffect));
 	t.true(effect?.value.includes("0/500"), effect?.value);
@@ -160,6 +169,7 @@ test("Lost guests: 500", t =>
 	ParkInfo.guests.lost = 500;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(lostGuestsEffect));
 	t.true(effect?.value.includes("500"), effect?.value);
@@ -173,6 +183,7 @@ test("Lost guests: 25, no impact", t =>
 	ParkInfo.guests.lost = 25;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(lostGuestsEffect));
 	t.true(effect?.value.includes("25"), effect?.value);
@@ -187,6 +198,7 @@ test("Ride uptime: 100%", t =>
 	ParkInfo.rides.uptime = 1000;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(rideUptimeEffect));
 	t.true(effect?.value.includes("100%"), effect?.value);
@@ -201,6 +213,7 @@ test("Ride uptime: 50%", t =>
 	ParkInfo.rides.uptime = 500;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(rideUptimeEffect));
 	t.true(effect?.value.includes("50%"), effect?.value);
@@ -215,6 +228,7 @@ test("Ride uptime: 0%", t =>
 	ParkInfo.rides.uptime = 0;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(rideUptimeEffect));
 	t.true(effect?.value.includes("0%"), effect?.value);
@@ -231,6 +245,7 @@ test("Ride average excitement & intensity: perfect", t =>
 	ParkInfo.rides.intensity = 650;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect1 = rating.effects.find(e => e.name.includes(rideAverageExcitementEffect));
 	t.true(effect1?.value.includes("3.68/3.68"), effect1?.value);
@@ -251,6 +266,7 @@ test("Ride average excitement & intensity: single Crooked House", t =>
 	ParkInfo.rides.intensity = Math.floor(62 / 8);
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	// NOTE: Slightly different from input because of divide by 8 and flooring. This reflects the game's algorithm.
 	const effect1 = rating.effects.find(e => e.name.includes(rideAverageExcitementEffect));
@@ -272,6 +288,7 @@ test("Ride total excitement & intensity: perfect", t =>
 	ParkInfo.rides.intensity = 1000;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect1 = rating.effects.find(e => e.name.includes(rideTotalExcitementEffect));
 	t.true(effect1?.value.includes("80.0/80.0"), effect1?.value);
@@ -292,6 +309,7 @@ test("Ride total excitement & intensity: single Crooked house", t =>
 	ParkInfo.rides.intensity = Math.floor(62 / 8);
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect1 = rating.effects.find(e => e.name.includes(rideTotalExcitementEffect));
 	t.true(effect1?.value.includes("2.1/80.0"), effect1?.value);
@@ -309,6 +327,7 @@ test("Litter: some", t =>
 	ParkInfo.litter = 50;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(litterEffect));
 	t.true(effect?.value.includes("50/150"), effect?.value);
@@ -322,6 +341,7 @@ test("Litter: maximum", t =>
 	ParkInfo.litter = 150;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(litterEffect));
 	t.true(effect?.value.includes("150/150"), effect?.value);
@@ -335,6 +355,7 @@ test("Litter: none", t =>
 	ParkInfo.litter = 0;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(litterEffect));
 	t.true(effect?.value.includes("0/150"), effect?.value);
@@ -348,6 +369,7 @@ test("Casualty penalty: maximum", t =>
 	ParkInfo.casualtyPenalty = 1000;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(casualtyEffect));
 	t.true(effect?.value.includes("1000/1000"), effect?.value);
@@ -361,6 +383,7 @@ test("Casualty penalty: none", t =>
 	ParkInfo.casualtyPenalty = 0;
 
 	const rating = ParkRating.for(ParkInfo);
+	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(casualtyEffect));
 	t.true(effect?.value.includes("0/1000"), effect?.value);
