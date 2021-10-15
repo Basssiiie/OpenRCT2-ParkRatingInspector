@@ -3,6 +3,7 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"lib": [ "es5" ],
+		"noFallthroughCasesInSwitch": true,
 		"noImplicitAny": true,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
