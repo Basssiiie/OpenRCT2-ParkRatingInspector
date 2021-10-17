@@ -2,6 +2,10 @@
 
 This plugin helps you break down your park rating and figure out why it is so low or so high. The inspector will show each of the different possible influences and how much they are currently affecting your rating, which should help you figure out where you can improve.
 
+## Note: this plugin currently only supports the newest develop!
+
+Any version released after the 16th of October 2021 should work. Once either OpenRCT2 v0.3.5 or v0.4 are released, those should work too.
+
 It also works on multiplayer servers!
 
 ![(Image of the Park Rating Inspector)](https://raw.githubusercontent.com/Basssiiie/OpenRCT2-ParkRatingInspector/master/img/magicmountain.png)
