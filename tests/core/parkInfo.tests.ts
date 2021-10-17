@@ -146,15 +146,17 @@ test("Litter is counted", t =>
 	global.park = Mock.park();
 	global.map = Mock.map({
 		entities: [
-			Mock<Litter>({ type: "litter", creationTime: 99_000 }), // very new litter
-			Mock<Litter>({ type: "litter", creationTime: 93_000 }), // new litter
+			Mock<Litter>({ type: "litter", creationTick: 99_000 }), // very new litter
+			Mock<Litter>({ type: "litter", creationTick: 12_000 }), // super old litter
+			Mock<Litter>({ type: "litter", creationTick: 93_000 }), // new litter
+			Mock<Litter>({ type: "litter", creationTick: 52_000 }), // somewhat old litter
 			Mock.entity({ type: "balloon" }),
-			Mock<Litter>({ type: "litter", creationTime: 92_000 }), // old litter
+			Mock<Litter>({ type: "litter", creationTick: 92_000 }), // old litter
 		]
 	});
 
 	ParkInfo.refresh();
-
+	// Count only litter older than 7680 ticks (> 3 minutes and 12 seconds)
 	t.is(3, ParkInfo.litter);
 });
 

@@ -237,7 +237,7 @@ export const Influences: Record<string, Influence> =
 		current.name = "Amount of litter";
 		current.value = `${litterCount}/150`;
 		current.maximum = null;
-		current.note = "-4 per piece of litter";
+		current.note = "-4 per piece of litter older than 3 minutes";
 		return true;
 	},
 

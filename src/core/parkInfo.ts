@@ -142,20 +142,18 @@ export const ParkInfo: ParkInfo =
 		this.rides.intensity = intensity;
 
 		// Litter
-		//let litterCount = 0;
-
 		const litter = map.getAllEntities("litter");
-		/*const currentTick = date.ticksElapsed;
+		const currentTick = date.ticksElapsed;
+
+		let litterCount = 0;
 		for (const item of litter)
 		{
-			//if ((currentTick - item.creationTime) >= 7680)
+			if ((currentTick - item.creationTick) >= 7680)
 			{
 				litterCount++;
 			}
 		}
-
-		this.litter = litterCount;*/
-		this.litter = litter.length;
+		this.litter = litterCount;
 
 		// Casualties
 		this.casualtyPenalty = park.casualtyPenalty;
