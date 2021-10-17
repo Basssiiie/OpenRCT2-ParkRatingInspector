@@ -6,7 +6,7 @@ import { pluginVersion } from "./utilities/environment";
 registerPlugin({
 	name: "ParkRatingInspector",
 	version: pluginVersion,
-	targetApiVersion: 36,
+	targetApiVersion: 38,
 	authors: ["Basssiiie"],
 	type: "local",
 	licence: "MIT",
