@@ -8,6 +8,12 @@ export const pluginVersion = "0.2";
 
 
 /**
+ * Returns the required OpenRCT2 API version.
+ */
+ export const requiredApiVersion = 38;
+
+
+/**
  * Returns the build configuration of the plugin.
  */
 export const buildConfiguration: BuildConfiguration = __BUILD_CONFIGURATION__;

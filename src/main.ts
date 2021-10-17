@@ -1,7 +1,7 @@
 import fui, { WindowTemplate } from "openrct2-fluentui";
 import { ParkInfo } from "./core/parkInfo";
 import { ParkRating } from "./core/parkRating";
-import { isUiAvailable, pluginVersion } from "./utilities/environment";
+import { isUiAvailable, pluginVersion, requiredApiVersion } from "./utilities/environment";
 import * as Log from "./utilities/logger";
 
 
@@ -126,7 +126,7 @@ export function main(): void
 
 	ui.registerMenuItem("Inspect park rating", () =>
 	{
-		if (!context.apiVersion || context.apiVersion < 36)
+		if (!context.apiVersion || context.apiVersion < requiredApiVersion)
 		{
 			const title = "Please update the game!";
 			const message = "\nThe version of OpenRCT2 you are currently playing is too old for this plugin.";
