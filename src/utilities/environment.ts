@@ -4,13 +4,13 @@
 /**
  * Returns the current version of the plugin.
  */
-export const pluginVersion = "0.2";
+export const pluginVersion = "0.3";
 
 
 /**
  * Returns the required OpenRCT2 API version.
  */
- export const requiredApiVersion = 38;
+export const requiredApiVersion = 38;
 
 
 /**

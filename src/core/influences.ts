@@ -12,22 +12,16 @@ type Influence = (current: Effect, park: ParkInfo) => boolean;
  * All influences that can be applied to a currently stored effect.
  * All influences returns true if the effect has changed, or false
  * if it's still the same.
+ *
+ * Online guides do mention a starting value of 1150, but throughout the
+ * various influences it gets subtracted down to zero anyway:
+ *    -150 to include total number of guests penalty;
+ *    -500 to include happy guests penalty;
+ *    -300 to include base ride penalties;
+ *    -200 to include ride total rating penalties;
  */
 export const Influences: Record<string, Influence> =
 {
-	/**
-	 * The initial starting park rating applied to every park.
-	 */
-	/*base()
-	{
-		// Internally 1150, but...
-		//   -150 to include total number of guests penalty;
-		//   -500 to include happy guests penalty;
-		//   -300 to include base ride penalties;
-		//   -200 to include ride total rating penalties;
-		return [0, "Initial base park rating (starting point)"];
-	},*/
-
 	/**
 	 * Penalty for parks with the 'difficult park rating' flag.
 	 */
@@ -77,14 +71,14 @@ export const Influences: Record<string, Influence> =
 			return disableEffect(current);
 
 		const happyGuests = park.guests.happy;
-		const hash = (totalGuests ^ happyGuests);
+		const hash = (totalGuests | (happyGuests << 16));
 
 		if (hash === current.cache)
 			return false; // same as cache, no update
 
 		current.cache = hash;
 		current.active = true;
-		current.impact = Math.floor(2 * Math.min(250, (happyGuests * 300) / totalGuests));
+		current.impact = (2 * Math.min(250, Math.floor((happyGuests * 300) / totalGuests)));
 
 		const percentage = Math.floor((happyGuests / totalGuests) * 100);
 		current.name = "Happy guests";

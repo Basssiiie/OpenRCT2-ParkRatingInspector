@@ -1,3 +1,5 @@
+import * as Log from "../utilities/logger";
+
 /**
  * Base api that keeps track on important info in the park.
  */
@@ -127,7 +129,7 @@ export const ParkInfo: ParkInfo =
 			ridesUptime += (100 - ride.downtime);
 			rideCount++;
 
-			if (ride.excitement > 0 || ride.intensity > 0)
+			if (ride.excitement != -1)
 			{
 				excitement += Math.floor(ride.excitement / 8);
 				intensity += Math.floor(ride.intensity / 8);
@@ -148,7 +150,12 @@ export const ParkInfo: ParkInfo =
 		let litterCount = 0;
 		for (const item of litter)
 		{
-			if ((currentTick - item.creationTick) >= 7680)
+			let age = (currentTick - item.creationTick);
+			if (age < 0)
+			{
+				age += 4_294_967_296; // Mimic uint32 underflow
+			}
+			if (age >= 7680)
 			{
 				litterCount++;
 			}
@@ -157,5 +164,7 @@ export const ParkInfo: ParkInfo =
 
 		// Casualties
 		this.casualtyPenalty = park.casualtyPenalty;
+
+		Log.debug(`Park info: ${Log.stringify(this)}`);
 	}
 };

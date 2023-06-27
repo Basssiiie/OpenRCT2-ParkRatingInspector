@@ -22,7 +22,7 @@
 		"url": "https://github.com/Basssiiie/OpenRCT2-ParkRatingInspector/issues"
 	},
 	"dependencies": {
-		"openrct2-fluentui": "^0.1.0"
+		"openrct2-flexui": "^0.1.0-prerelease.13"
 	},
 	"devDependencies": {
 		"@ava/typescript": "^2.0.0",

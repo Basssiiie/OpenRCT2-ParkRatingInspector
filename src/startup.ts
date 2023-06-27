@@ -1,4 +1,4 @@
-import fui, { WindowTemplate } from "openrct2-fluentui";
+import { WindowTemplate, label, listview, store, window } from "openrct2-flexui";
 import { ParkInfo } from "./core/parkInfo";
 import { ParkRating } from "./core/parkRating";
 import { isUiAvailable, pluginVersion, requiredApiVersion } from "./utilities/environment";
@@ -10,8 +10,8 @@ const viewmodel =
 	parkRating: ParkRating.for(ParkInfo),
 	nextUpdate: 0,
 
-	currentRatingLabel: fui.observable<string>(""),
-	items: fui.observable<ListViewItem[]>([]),
+	currentRatingLabel: store(""),
+	items: store<ListViewItem[]>([]),
 
 	check(): void
 	{
@@ -35,10 +35,11 @@ const viewmodel =
 		this.currentRatingLabel.set(`Current park rating: ${rating}/999`);
 
 		const effects = this.parkRating.effects.sort((l, r) => (r.impact - l.impact) || (l.order - r.order));
-		const target = this.items.get();
-		target.length = effects.length;
+		const count = effects.length;
+		const oldItems = this.items.get();
+		const newItems = Array<ListViewItem>(count);
 
-		for (let i = 0; i < effects.length; i++)
+		for (let i = 0; i < count; i++)
 		{
 			const effect = effects[i];
 			const color =
@@ -46,67 +47,51 @@ const viewmodel =
 				(effect.impact > 0) ? "{CELADON}+" :
 				(effect.impact < 0) ? "{RED}" : "   ";
 
-			let row = (target[i] as string[]);
-			if (!row)
-				target[i] = row = Array<string>(4);
-
+			const row = (oldItems[i] as string[]) || Array<string>(4);
 			row[0] = effect.name;
 			row[1] = effect.value;
 			row[2] = (color + effect.impact.toString());
 			row[3] = effect.note;
+			newItems[i] = row;
 		}
-		this.items.set(target);
+		this.items.set(newItems);
 	}
 };
 
 
 let template: WindowTemplate | undefined;
-function window(): WindowTemplate
+function getWindow(): WindowTemplate
 {
 	if (template)
 		return template;
 
-	return (template = fui.window({
+	return (template = window({
 		title: `Park Rating Inspector (v${pluginVersion})`,
-		width: 550, height: 210,
-		minWidth: 350, minHeight: 150,
-		maxWidth: 1200, maxHeight: 300,
-		padding: 5,
-		content: b => b
-		.listview({
-			content: b => b
-			.column({
-				header: "Name",
-				width: "35%"
-			})
-			.column({
-				header: "Value",
-				width: "110px"
-			})
-			.column({
-				header: "Impact",
-				width: "45px"
-			})
-			.column({
-				header: "Notes",
-				width: "65%"
+		width: { value: 550, min: 350, max: 1200 },
+		height: { value: 210, min: 150, max: 300 },
+		spacing: 3,
+		content: [
+			listview({
+				columns: [
+					{ header: "Name", width: "35%" },
+					{ header: "Value", width: "110px" },
+					{ header: "Impact", width: "45px" },
+					{ header: "Notes", width: "65%" }
+				],
+				items: viewmodel.items,
+				isStriped: true,
 			}),
-			items: viewmodel.items,
-			isStriped: true,
-		})
-		.label({
-			text: viewmodel.currentRatingLabel,
-			alignment: "centred",
-			height: "20px",
-			padding: [2, 10]
-		})
-		.label({
-			text: "github.com/Basssiiie/OpenRCT2-ParkRatingInspector",
-			alignment: "centred",
-			disabled: true,
-			height: "12px",
-			padding: [0, 10]
-		}),
+			label({
+				text: viewmodel.currentRatingLabel,
+				alignment: "centred",
+				height: 12
+			}),
+			label({
+				text: "github.com/Basssiiie/OpenRCT2-ParkRatingInspector",
+				alignment: "centred",
+				disabled: true
+			}),
+		],
 		onUpdate: () => viewmodel.check()
 	}));
 }
@@ -115,7 +100,7 @@ function window(): WindowTemplate
 /**
  * Entry point of the plugin.
  */
-export function main(): void
+export function startup(): void
 {
 	Log.debug("Plugin started.");
 
@@ -137,6 +122,6 @@ export function main(): void
 		}
 
 		viewmodel.nextUpdate = 0;
-		window().open();
+		getWindow().open();
 	});
 };

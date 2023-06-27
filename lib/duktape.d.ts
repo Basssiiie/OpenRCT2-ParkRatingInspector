@@ -1,13 +1,18 @@
 /**
  * Allows access to the duktape object.
- * Reference: https://duktape.org/guide.html#builtin-duktape
  */
 declare const Duktape: Duktape;
+
+/**
+ * Allows acces to the duktape exposed performance timing api.
+ * @see {@link https://duktape.org/guide.html#builtin-performance}
+ */
+declare const performance: Performance;
 
 
 /**
  * Allows access to the duktape object.
- * Reference: https://duktape.org/guide.html#builtin-duktape
+ * @see {@link https://duktape.org/guide.html#builtin-duktape}
  */
 interface Duktape
 {
@@ -26,11 +31,35 @@ interface Duktape
 
 /**
  * An entry on the call stack.
- * Reference: https://duktape.org/guide.html#builtin-duktape-act
+ * @see {@link https://duktape.org/guide.html#builtin-duktape-act}
  */
 interface DukStackEntry
 {
-	function: Function;
+	function: DukFunction;
 	lineNumber: number;
 	pc: number;
+}
+
+
+/**
+ * A reference to a standard ES5 function in Duktape.
+ * @see {@link https://duktape.org/guide.html#ecmascript-function-properties}
+ */
+interface DukFunction extends Function
+{
+	name: string;
+	fileName: string;
+}
+
+
+/**
+ * Allows acces to the duktape exposed performance timing api.
+ * @see {@link https://duktape.org/guide.html#builtin-performance}
+ */
+interface Performance
+{
+	/**
+	 * Gets the monotonic time in milliseconds, including fractions.
+	 */
+	now(): number;
 }

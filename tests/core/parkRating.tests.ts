@@ -30,7 +30,7 @@ test("All effects are valid and active", t =>
 	const rating = ParkRating.for(ParkInfo);
 	rating.recalculate();
 
-	t.is(11, rating.effects.length);
+	t.is(rating.effects.length, 11);
 	t.true(rating.effects.every(e => e.active));
 	t.true(rating.effects.every(e => e.name));
 	t.true(rating.effects.every(e => e.value));
@@ -47,8 +47,8 @@ test("Difficult rating is enabled", t =>
 	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(difficultyEffect));
-	t.is("enabled", effect?.value);
-	t.is(-100, effect?.impact);
+	t.is(effect?.value, "enabled");
+	t.is(effect?.impact, -100);
 });
 
 
@@ -61,7 +61,7 @@ test("Difficult rating is disabled", t =>
 	rating.recalculate();
 
 	const effect = rating.effects.find(e => e.name.includes(difficultyEffect));
-	t.is(undefined, effect); // gone
+	t.is(effect, undefined); // gone
 });
 
 
@@ -80,7 +80,7 @@ test("Difficult rating is enabled then disabled then enabled", t =>
 	rating.recalculate();
 
 	const effect2 = rating.effects.find(e => e.name.includes(difficultyEffect));
-	t.is(undefined, effect2); // gone
+	t.is(effect2, undefined); // gone
 
 	ParkInfo.hasDifficultParkRating = true;
 	rating.recalculate();
@@ -100,7 +100,7 @@ test("Total guests", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(numberOfGuestsEffect));
 	t.true(effect?.value.includes("1310"), effect?.value);
-	t.is(100, effect?.impact);
+	t.is(effect?.impact, 100);
 });
 
 
@@ -114,7 +114,7 @@ test("Total guests: cap at 2000", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(numberOfGuestsEffect));
 	t.true(effect?.value.includes("2600"), effect?.value);
-	t.is(153, effect?.impact);
+	t.is(effect?.impact, 153);
 });
 
 
@@ -129,7 +129,7 @@ test("Happy guests: 100% happiness", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(happyGuestsEffect));
 	t.true(effect?.value.includes("500/500"), effect?.value);
-	t.is(500, effect?.impact);
+	t.is(effect?.impact, 500);
 });
 
 
@@ -144,7 +144,7 @@ test("Happy guests: 50% happiness", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(happyGuestsEffect));
 	t.true(effect?.value.includes("250/500"), effect?.value);
-	t.is(300, effect?.impact);
+	t.is(effect?.impact, 300);
 });
 
 
@@ -159,7 +159,7 @@ test("Happy guests: 0% happiness", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(happyGuestsEffect));
 	t.true(effect?.value.includes("0/500"), effect?.value);
-	t.is(0, effect?.impact);
+	t.is(effect?.impact, 0);
 });
 
 
@@ -173,7 +173,7 @@ test("Lost guests: 500", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(lostGuestsEffect));
 	t.true(effect?.value.includes("500"), effect?.value);
-	t.is(-7 * 475, effect?.impact);
+	t.is(effect?.impact, -7 * 475);
 });
 
 
@@ -187,7 +187,7 @@ test("Lost guests: 25, no impact", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(lostGuestsEffect));
 	t.true(effect?.value.includes("25"), effect?.value);
-	t.is(0, effect?.impact);
+	t.is(effect?.impact, 0);
 });
 
 
@@ -202,7 +202,7 @@ test("Ride uptime: 100%", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(rideUptimeEffect));
 	t.true(effect?.value.includes("100%"), effect?.value);
-	t.is(200, effect?.impact);
+	t.is(effect?.impact, 200);
 });
 
 
@@ -217,7 +217,7 @@ test("Ride uptime: 50%", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(rideUptimeEffect));
 	t.true(effect?.value.includes("50%"), effect?.value);
-	t.is(100, effect?.impact);
+	t.is(effect?.impact, 100);
 });
 
 
@@ -232,7 +232,7 @@ test("Ride uptime: 0%", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(rideUptimeEffect));
 	t.true(effect?.value.includes("0%"), effect?.value);
-	t.is(0, effect?.impact);
+	t.is(effect?.impact, 0);
 });
 
 
@@ -249,11 +249,11 @@ test("Ride average excitement & intensity: perfect", t =>
 
 	const effect1 = rating.effects.find(e => e.name.includes(rideAverageExcitementEffect));
 	t.true(effect1?.value.includes("3.68/3.68"), effect1?.value);
-	t.is(50, effect1?.impact);
+	t.is(effect1?.impact, 50);
 
 	const effect2 = rating.effects.find(e => e.name.includes(rideAverageIntensityEffect));
 	t.true(effect2?.value.includes("5.20/5.20"), effect2?.value);
-	t.is(50, effect2?.impact);
+	t.is(effect2?.impact, 50);
 });
 
 
@@ -271,11 +271,11 @@ test("Ride average excitement & intensity: single Crooked House", t =>
 	// NOTE: Slightly different from input because of divide by 8 and flooring. This reflects the game's algorithm.
 	const effect1 = rating.effects.find(e => e.name.includes(rideAverageExcitementEffect));
 	t.true(effect1?.value.includes("2.08/3.68"), effect1?.value);
-	t.is(40, effect1?.impact);
+	t.is(effect1?.impact, 40);
 
 	const effect2 = rating.effects.find(e => e.name.includes(rideAverageIntensityEffect));
 	t.true(effect2?.value.includes("0.56/5.20"), effect2?.value);
-	t.is(21, effect2?.impact);
+	t.is(effect2?.impact, 21);
 });
 
 
@@ -292,11 +292,11 @@ test("Ride total excitement & intensity: perfect", t =>
 
 	const effect1 = rating.effects.find(e => e.name.includes(rideTotalExcitementEffect));
 	t.true(effect1?.value.includes("80.0/80.0"), effect1?.value);
-	t.is(100, effect1?.impact);
+	t.is(effect1?.impact, 100);
 
 	const effect2 = rating.effects.find(e => e.name.includes(rideTotalIntensityEffect));
 	t.true(effect2?.value.includes("80.0/80.0"), effect2?.value);
-	t.is(100, effect2?.impact);
+	t.is(effect2?.impact, 100);
 });
 
 
@@ -313,11 +313,11 @@ test("Ride total excitement & intensity: single Crooked house", t =>
 
 	const effect1 = rating.effects.find(e => e.name.includes(rideTotalExcitementEffect));
 	t.true(effect1?.value.includes("2.1/80.0"), effect1?.value);
-	t.is(2, effect1?.impact);
+	t.is(effect1?.impact, 2);
 
 	const effect2 = rating.effects.find(e => e.name.includes(rideTotalIntensityEffect));
 	t.true(effect2?.value.includes("0.6/80.0"), effect2?.value);
-	t.is(0, effect2?.impact);
+	t.is(effect2?.impact, 0);
 });
 
 
@@ -331,7 +331,7 @@ test("Litter: some", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(litterEffect));
 	t.true(effect?.value.includes("50/150"), effect?.value);
-	t.is(-4 * 50, effect?.impact);
+	t.is(effect?.impact, -4 * 50);
 });
 
 
@@ -345,7 +345,7 @@ test("Litter: maximum", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(litterEffect));
 	t.true(effect?.value.includes("150/150"), effect?.value);
-	t.is(-4 * 150, effect?.impact);
+	t.is(effect?.impact, -4 * 150);
 });
 
 
@@ -373,7 +373,7 @@ test("Casualty penalty: maximum", t =>
 
 	const effect = rating.effects.find(e => e.name.includes(casualtyEffect));
 	t.true(effect?.value.includes("1000/1000"), effect?.value);
-	t.is(-1000, effect?.impact);
+	t.is(effect?.impact, -1000);
 });
 
 

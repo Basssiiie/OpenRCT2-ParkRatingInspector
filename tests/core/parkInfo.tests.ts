@@ -7,9 +7,9 @@ import { ParkInfo } from "../../src/core/parkInfo";
 
 test("Difficult rating is enabled", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park({ flags: [ "difficultParkRating" ] });
-	global.map = Mock.map();
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park({ flags: [ "difficultParkRating" ] });
+	globalThis.map = Mock.map();
 
 	ParkInfo.refresh();
 
@@ -19,9 +19,9 @@ test("Difficult rating is enabled", t =>
 
 test("Difficult rating is disabled", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park();
-	global.map = Mock.map();
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map();
 
 	ParkInfo.refresh();
 
@@ -31,9 +31,9 @@ test("Difficult rating is disabled", t =>
 
 test("Guest total is set", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park({ guests: 1234 });
-	global.map = Mock.map();
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park({ guests: 1234 });
+	globalThis.map = Mock.map();
 
 	ParkInfo.refresh();
 
@@ -43,9 +43,9 @@ test("Guest total is set", t =>
 
 test("Happy guests are counted", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park();
-	global.map = Mock.map({
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
 		tiles: Mock.tile(),
 		entities: [
 			Mock.guest({ happiness: 255 }), // super happy
@@ -64,9 +64,9 @@ test("Happy guests are counted", t =>
 
 test("Lost guests are counted", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park();
-	global.map = Mock.map({
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
 		entities: [
 			Mock.guest({ lostCountdown: 255, flags: [ "leavingPark" ] }), // not lost
 			Mock.guest({ lostCountdown: 90,  flags: [ "leavingPark" ] }),  // almost lost
@@ -87,9 +87,9 @@ test("Lost guests are counted", t =>
 
 test("Ride total is calculated", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park();
-	global.map = Mock.map({
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
 		rides: [ Mock.ride(), Mock.ride(), Mock.ride(), Mock.ride(), Mock.ride() ]
 	});
 
@@ -101,9 +101,9 @@ test("Ride total is calculated", t =>
 
 test("Ride uptime is calculated", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park();
-	global.map = Mock.map({
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
 		rides: [
 			Mock.ride({ downtime: 0 }),   // 100
 			Mock.ride({ downtime: 100 }), // 0
@@ -120,14 +120,14 @@ test("Ride uptime is calculated", t =>
 
 test("Ride ratings are calculated", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park();
-	global.map = Mock.map({
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
 		rides: [
 			Mock.ride({ excitement: 310, intensity: 210 }), // 38, 26
-			Mock.ride(), // no ratings
+			Mock.ride({ excitement: -1 }), // no ratings
 			Mock.ride({ excitement: 820, intensity: 720 }), // 102, 90
-			Mock.ride(), // no ratings
+			Mock.ride({ excitement: -1 }), // no ratings
 		]
 	});
 
@@ -140,17 +140,14 @@ test("Ride ratings are calculated", t =>
 });
 
 
-test("Litter is counted", t =>
+test("Litter is counted when old", t =>
 {
-	global.date = Mock.date({ ticksElapsed: 100_000 });
-	global.park = Mock.park();
-	global.map = Mock.map({
+	globalThis.date = Mock.date({ ticksElapsed: 100_000 });
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
 		entities: [
-			Mock<Litter>({ type: "litter", creationTick: 99_000 }), // very new litter
 			Mock<Litter>({ type: "litter", creationTick: 12_000 }), // super old litter
-			Mock<Litter>({ type: "litter", creationTick: 93_000 }), // new litter
 			Mock<Litter>({ type: "litter", creationTick: 52_000 }), // somewhat old litter
-			Mock.entity({ type: "balloon" }),
 			Mock<Litter>({ type: "litter", creationTick: 92_000 }), // old litter
 		]
 	});
@@ -161,11 +158,61 @@ test("Litter is counted", t =>
 });
 
 
+test("Litter is not counted when new", t =>
+{
+	globalThis.date = Mock.date({ ticksElapsed: 100_000 });
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
+		entities: [
+			Mock<Litter>({ type: "litter", creationTick: 99_000 }), // very new litter
+			Mock<Litter>({ type: "litter", creationTick: 93_000 }), // new litter
+		]
+	});
+
+	ParkInfo.refresh();
+	// Count only litter older than 7680 ticks (> 3 minutes and 12 seconds)
+	t.is(0, ParkInfo.litter);
+});
+
+
+test("Litter does not count other entities", t =>
+{
+	globalThis.date = Mock.date({ ticksElapsed: 100_000 });
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
+		entities: [
+			Mock.entity({ type: "balloon" }),
+			Mock.entity({ type: "explosion_cloud" }),
+		]
+	});
+
+	ParkInfo.refresh();
+	t.is(0, ParkInfo.litter);
+});
+
+
+test("Litter with corrupt futuristic age is counted", t => // some sc6's have corrupted ages
+{
+	globalThis.date = Mock.date({ ticksElapsed: 100_000 });
+	globalThis.park = Mock.park();
+	globalThis.map = Mock.map({
+		entities: [
+			Mock<Litter>({ type: "litter", creationTick: 4_294_954_443 }),
+			Mock<Litter>({ type: "litter", creationTick: 4_294_887_320 }),
+			Mock<Litter>({ type: "litter", creationTick: 4_294_889_391 }),
+		]
+	});
+
+	ParkInfo.refresh();
+	t.is(3, ParkInfo.litter);
+});
+
+
 test("Casualty penalty is retrieved", t =>
 {
-	global.date = Mock.date();
-	global.park = Mock.park({ casualtyPenalty: 246 });
-	global.map = Mock.map();
+	globalThis.date = Mock.date();
+	globalThis.park = Mock.park({ casualtyPenalty: 246 });
+	globalThis.map = Mock.map();
 
 	ParkInfo.refresh();
 

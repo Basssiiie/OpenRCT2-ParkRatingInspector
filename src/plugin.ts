@@ -1,6 +1,6 @@
 /// <reference path="../lib/openrct2.d.ts" />
 
-import { main } from "./main";
+import { startup } from "./startup";
 import { pluginVersion, requiredApiVersion } from "./utilities/environment";
 
 registerPlugin({
@@ -10,5 +10,5 @@ registerPlugin({
 	authors: ["Basssiiie"],
 	type: "local",
 	licence: "MIT",
-	main,
+	main: startup,
 });
