@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"lib": [ "es5" ],
+		"module": "ES2020",
+		"moduleResolution": "node",
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitAny": true,
 		"noImplicitOverride": true,
@@ -13,11 +14,12 @@
 		"outDir": "out",
 		"strict": true,
 		"target": "es5",
+		"lib": [ "es5", "es6" ]
 	},
 	"include": [
 		"./lib/**/*.ts",
 		"./src/**/*.ts",
 		"./tests/**/*.ts"
 	],
-	"noEmit": true,
+	"noEmit": true
 }

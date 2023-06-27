@@ -1,5 +1,0 @@
-{
-  "events": {
-    "start": "npm run build:dev"
-  }
-}
